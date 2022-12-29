@@ -90,15 +90,15 @@ h1{
     text-decoration: none;
 }
 
-.models-item--img{
+.models-item-img{
     width: 200px;
     height: 200px;
     background-color: #EEE;
-    border-radius: 100px;
+    border-radius: 20px;
     box-shadow: 0px 10px 50px rgba(0,0,0, 0.2);
 }
 
-.models-item--img img{
+.models-item-img img{
     width: 100%;
     height: auto;
 }
