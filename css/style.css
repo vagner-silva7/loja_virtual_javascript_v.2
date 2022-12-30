@@ -69,6 +69,7 @@ main{
 
 h1{
     font-family: 'Hepta Slab', Helvetica, Arial;
+    text-align: center;
 }
 
 .models-area{
@@ -101,6 +102,7 @@ h1{
 .models-item-img img{
     width: 100%;
     height: auto;
+    border-radius: 20px;
 }
 
 .models-item--add{
@@ -194,13 +196,13 @@ h1{
 
 .modelsInfo .modelsInfo--desc{
     font-size: 15px;
-    color: #999;
+    color: #000;   /* #999 */
     margin-top: 10px;
     font-family: 'Lato', Helvetica, Arial;
 }
 
 .modelsInfo--sector{
-    color: #ccc;
+    color: #000;  /* #ccc */
     text-transform: uppercase;
     font-size: 14px;
     margin-top: 30px;
