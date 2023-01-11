@@ -1,4 +1,6 @@
+let cart = [];
 let modalQt = 0;
+let key = 0;
 const c = (el) => document.querySelector(el);
 const cs = (el) => document.querySelectorAll(el);
 
@@ -15,7 +17,7 @@ modelsJson.map((item, index)=>{
         modelsItem.querySelector('a').addEventListener('click', (e)=>{
             e.preventDefault();
 
-                let key = e.target.closest('.models-item').getAttribute('data-key');
+                key = e.target.closest('.models-item').getAttribute('data-key');
 
                 modalQt = 1;
 
@@ -39,15 +41,78 @@ modelsJson.map((item, index)=>{
             c('.modelsInfo--qt').innerHTML = modalQt;
             
             /* ativando estilo display flex, abrindo janela de itens selecionados*/
-            c('.modelsWindowArea').style.opcity = 0;
+            c('.modelsWindowArea').style.opacity = 0;
             c('.modelsWindowArea').style.display = 'flex';
             
             setTimeout(()=>{
-                c('.modelsWindowArea').style.opcity = 1;
+                c('.modelsWindowArea').style.opacity = 1;
 
             }, 200);
             
         });
 
     c('.models-area').append(modelsItem);  /* cola o clone usando comando - append() */
+});
+
+// Açoes do modal - janela
+
+function closeModal(){
+    c('.modelsWindowArea').style.opacity = 0;
+        
+        setTimeout(()=>{
+
+            c('.modelsWindowArea').style.display = 'none';
+
+    }, 500);
+}
+
+cs('.modelsInfo--cancelButton, .modelsInfo--cancelMobileButton').forEach((item)=>{
+    item.addEventListener('click', closeModal);
+});
+
+
+c('.modelsInfo--qtmenos').addEventListener('click', ()=>{
+    if(modalQt >1){
+        modalQt --;
+        c('.modelsInfo--qt').innerHTML = modalQt;
+    }    
+});
+
+c('.modelsInfo--qtmais').addEventListener('click', ()=>{
+    modalQt ++;
+    c('.modelsInfo--qt').innerHTML = modalQt;
+});
+
+cs('.modelsInfo--size').forEach((size, sizeIndex)=>{
+    size.addEventListener('click', (e)=>{
+        c('.modelsInfo--size.selected').classList.remove('selected');
+        //e.target.classList.add('selected'); 
+        size.classList.add('selected'); 
+    });
+
+});
+
+//carrinho de compra
+
+c('.modelsInfo--addButton').addEventListener('click', ()=>{
+    //qual o modelo?
+    //console.log("Modelo: " + key);
+    
+    //qual o tamanho?
+    let size = parseInt(c('.modelsInfo--size.selected').getAttribute('data-key'));
+    //console.log("Tamanho: " + size);
+    
+    //qual quantidade?
+    //console.log("Quantidade: " + modalQt);
+    
+    //carrinho 
+    //para conferir entre em ferramentas de desenvolvedor do navegador
+    //aba console
+    //digite comando, depois do sinal >> cart
+    cart.push({
+        id:modelsJson[key].id,  //modelo ou id
+        size,                   //tamanho
+        qt:modalQt              //quantidade
+    });
+    closeModal();
 });
