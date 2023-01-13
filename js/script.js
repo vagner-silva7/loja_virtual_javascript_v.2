@@ -86,8 +86,10 @@ c('.modelsInfo--qtmais').addEventListener('click', ()=>{
 cs('.modelsInfo--size').forEach((size, sizeIndex)=>{
     size.addEventListener('click', (e)=>{
         c('.modelsInfo--size.selected').classList.remove('selected');
-        //e.target.classList.add('selected'); 
-        size.classList.add('selected'); 
+            //e.target.classList.add('selected'); 
+            size.classList.add('selected'); 
+                c('.modelsInfo--actualPrice').innerHTML = `R$ ${modelsJson[key].price[sizeIndex].toFixed(2)}`;
+
     });
 
 });
@@ -104,15 +106,54 @@ c('.modelsInfo--addButton').addEventListener('click', ()=>{
     
     //qual quantidade?
     //console.log("Quantidade: " + modalQt);
+
+    let identifier = modelsJson[key].id+'@'+size;  //chave comparação de item
+
+    let locaId = cart.findIndex((item) => item.identifier == identifier);  // comparando item para somar quantidade
+
+        if(locaId > -1){
+
+            cart[locaId].qt += modalQt;
+
+        } else {
     
-    //carrinho 
-    //para conferir entre em ferramentas de desenvolvedor do navegador
-    //aba console
-    //digite comando, depois do sinal >> cart
-    cart.push({
-        id:modelsJson[key].id,  //modelo ou id
-        size,                   //tamanho
-        qt:modalQt              //quantidade
-    });
+            //carrinho 
+            //para conferir entre em ferramentas de desenvolvedor do navegador
+            //aba console
+            //digite comando, depois do sinal >> cart
+            cart.push({
+                identifier,
+                id:modelsJson[key].id,  //modelo ou id
+                 size,                   //tamanho
+                qt:modalQt              //quantidade
+            });
+
+        }
+
+    updateCart();
+    
     closeModal();
 });
+
+
+//Função aside (HTML) ou show (css)
+function updateCart(){
+    if(cart.length > 0) {
+
+        c('aside').classList.add('show');
+
+            cart.map((itemCart, index)=>{
+
+                let modelItem = modelsJson.find((itemBD) => itemBD.id == itemCart.id);
+
+                console.log(modelItem);
+
+            });
+
+    } else {
+
+        c('aside').classList.remove('show');
+
+    }
+
+};
