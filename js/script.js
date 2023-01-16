@@ -136,23 +136,96 @@ c('.modelsInfo--addButton').addEventListener('click', ()=>{
 });
 
 
+// configuração mobile
+
+c('.menu-openner').addEventListener('click', () => {
+    if(cart.length > 0) {
+        c('aside').style.left = '0';
+    }
+
+});
+
+
+c('.menu-closer').addEventListener('click', () => {
+    c('aside').style.left = '100vw';
+
+});
+
+
+// configuração desktop
+
+c('.cart--finalizar').addEventListener('click', ()=>{
+    cart = [];
+    updateCart();
+
+});
+
 //Função aside (HTML) ou show (css)
 function updateCart(){
+
+    c('.menu-openner span').innerHTML = cart.length;   //mobile
+
     if(cart.length > 0) {
 
         c('aside').classList.add('show');
 
-            cart.map((itemCart, index)=>{
+            c('.cart').innerHTML = '';
 
-                let modelItem = modelsJson.find((itemBD) => itemBD.id == itemCart.id);
+            let subtotal = 0;
+            let desconto = 0;
+            let total = 0;
 
-                console.log(modelItem);
+                cart.map((itemCart, index)=>{
 
-            });
+                    let modelItem = modelsJson.find((itemBD) => itemBD.id == itemCart.id);
+                        subtotal += modelItem.price[itemCart.size] * itemCart.qt;
+
+                    let cartItem = c('.models .cart--item').cloneNode(true);
+                    let modelSizeName;
+                        switch(itemCart.size) {
+                            case 0:
+                                modelSizeName = 'P';
+                                break;
+                            case 1: 
+                                modelSizeName = 'M';
+                                break;   
+                            case 2: 
+                                modelSizeName = 'G';
+                                break;  
+                        }
+
+                        cartItem.querySelector('img').src = modelItem.img;
+                        cartItem.querySelector('.cart--item-nome').innerHTML = `${modelItem.name} (${modelSizeName} - ${modelItem.sizes[itemCart.size]})`;
+                        cartItem.querySelector('.cart--item-qt').innerHTML = itemCart.qt;
+                        cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+                            if(itemCart.qt > 1){
+                                itemCart.qt--;
+                            }else{
+                                cart.splice(index, 1);
+                            };
+                            updateCart();
+                        });
+                        cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+                            itemCart.qt++;
+                            updateCart();
+                        });
+
+                    /* console.log(modelItem); */
+
+                    c('.cart').append(cartItem);
+
+                });
+
+                desconto = subtotal * 0.1;
+                total = subtotal - desconto;
+                c('.subtotal span:last-child').innerHTML = `R$ ${subtotal.toFixed(2)}`;
+                c('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`;
+                c('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`;
 
     } else {
 
         c('aside').classList.remove('show');
+        c('aside').style.left = '100vw';  //mobile
 
     }
 
